@@ -60,8 +60,37 @@ export default class MessageDispatch extends EventTarget {
   receive(message) {
     if (isLockedDownDemoRoom()) return;
 
-    this.addToPresenceLog(message);
-    this.dispatchEvent(new CustomEvent("message", { detail: message }));
+    const isSlash = message.body !== undefined ? message.body.includes("///") : false;
+    if (isSlash) {
+      const chatBodyList = message.body.split("///");
+      console.log(chatBodyList);
+      
+      if (
+        chatBodyList[0] === "systemMessage" &&
+        chatBodyList[1] === "rollcall" &&
+        chatBodyList[2] === "from"
+      ) {
+        const mail = window.APP.hubChannel.store.state.credentials.mail;
+        const admin = chatBodyList[2];
+        console.log(mail, admin);
+        const message =
+            "systemMessage///rollcall///" + `${mail}` + "///to///" + `${admin}`;
+          document.getElementById("avatar-rig").messageDispatch.dispatch(message);
+      } else if(
+        chatBodyList[0] === "systemMessage" &&
+        chatBodyList[1] === "rollcall" &&
+        chatBodyList[3] === "to" && 
+        chatBodyList[4] === window.APP.hubChannel.store.state.profile.displayName
+      ) {
+        console.log('rollcall', chatBodyList[2]);
+      }else {
+        this.addToPresenceLog(message);
+        this.dispatchEvent(new CustomEvent("message", { detail: message }));
+      }
+    } else {
+      this.addToPresenceLog(message);
+      this.dispatchEvent(new CustomEvent("message", { detail: message }));
+    }
   }
 
   log = (messageType, props) => {

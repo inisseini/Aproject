@@ -149,8 +149,6 @@ export function PeopleSidebar({
           filteredPeople.map(person => {
             const DeviceIcon = getDeviceIconComponent(person.context);
             const VoiceIcon = getVoiceIconComponent(person.micPresence);
-            console.log('test person=', person);
-            
 
             return (
               <ButtonListItem
