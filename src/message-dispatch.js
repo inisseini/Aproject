@@ -68,10 +68,11 @@ export default class MessageDispatch extends EventTarget {
       if (
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[1] === "rollcall" &&
-        chatBodyList[2] === "from"
+        chatBodyList[2] === "from" &&
+        chatBodyList[3] !== window.APP.hubChannel.store.state.profile.displayName
       ) {
-        const mail = window.APP.hubChannel.store.state.credentials.mail;
-        const admin = chatBodyList[2];
+        const mail = window.APP.hubChannel.store.state.credentials.email;
+        const admin = chatBodyList[3];
         console.log(mail, admin);
         const message =
             "systemMessage///rollcall///" + `${mail}` + "///to///" + `${admin}`;
