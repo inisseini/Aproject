@@ -213,7 +213,9 @@ class UIRoot extends Component {
     sidebarId: null,
     presenceCount: 0,
     chatPrefix: "",
-    chatAutofocus: false
+    chatAutofocus: false,
+
+    isTPS: false 
   };
 
   constructor(props) {
@@ -1667,10 +1669,12 @@ class UIRoot extends Component {
                       <>
                         <ToggleViewModeToolbarButton
                           onClick={() => {
-                            if(selected) {
+                            if(!this.state.isTPS) {
                               this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_THIRD_PERSON_NEAR)
-                            } else {
+                              this.setState({ isTPS: true });
+                            } else if(this.state.isTPS) {
                               this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_FIRST_PERSON)
+                              this.setState({ isTPS: false });
                             }
                           }}
                           selected={false}
