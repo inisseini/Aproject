@@ -13,7 +13,6 @@ import { EventTarget } from "event-target-shim";
 import { fetchRandomDefaultAvatarId, generateRandomName } from "../utils/identity.js";
 import { NO_DEVICE_ID } from "../utils/media-devices-utils.js";
 import { AAModes } from "../constants";
-import { CAMERA_MODE_FIRST_PERSON } from "../systems/camera-system.js";
 
 
 const defaultMaterialQuality = (function () {
@@ -165,7 +164,6 @@ export const SCHEMA = {
         enablePostEffects: { type: "bool", default: false },
         enableBloom: { type: "bool", default: true }, // only applies if post effects are enabled
         aaMode: { type: "string", default: AAModes.MSAA_4X }, // only applies if post effects are enabled
-        viewMode: { type: "number", default: 0 }
       }
     },
 

@@ -277,23 +277,6 @@ export class CameraSystem {
     this.mode = NEXT_MODES[this.mode] || 0;
   }
 
-  setMode(cameraMode) {
-    if (cameraMode > CAMERA_MODE_SCENE_PREVIEW || cameraMode < 0 || cameraMode == this.mode) return
-
-    const vrMode = AFRAME.scenes[0].is("vr-mode") || AFRAME.utils.device.isMobileVR()
-    const mode = vrMode ? CAMERA_MODE_FIRST_PERSON : cameraMode
-
-    this.mode = mode
-
-    if (this.mode == CAMERA_MODE_FIRST_PERSON) {
-      this.viewingCamera.layers.disable(Layers.CAMERA_LAYER_THIRD_PERSON_ONLY)
-      this.viewingCamera.layers.enable(Layers.CAMERA_LAYER_FIRST_PERSON_ONLY)
-    } else {
-      this.viewingCamera.layers.disable(Layers.CAMERA_LAYER_FIRST_PERSON_ONLY)
-      this.viewingCamera.layers.enable(Layers.CAMERA_LAYER_THIRD_PERSON_ONLY)
-    }
-  }
-
   inspect(obj, distanceMod, fireChangeEvent = true) {
     this.verticalDelta = 0;
     this.horizontalDelta = 0;
@@ -469,7 +452,13 @@ export class CameraSystem {
       }
       if (!this.enteredScene && entered) {
         this.enteredScene = true;
-        this.setMode(window.APP.store.state.preferences.viewMode)
+        if(!localStorage.getItem("viewMode")){
+          localStorage.setItem("viewMode", 0);
+          this.mode = 0;
+        }
+        this.mode = localStorage.getItem("viewMode");
+        //this.mode = CAMERA_MODE_FIRST_PERSON;
+        
       }
       this.avatarPOVRotator = this.avatarPOVRotator || this.avatarPOV.components["pitch-yaw-rotator"];
       this.viewingCameraRotator = this.viewingCameraRotator || this.viewingCamera.el.components["pitch-yaw-rotator"];

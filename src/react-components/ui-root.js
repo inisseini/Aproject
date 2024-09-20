@@ -1670,16 +1670,10 @@ class UIRoot extends Component {
                         <ToggleViewModeToolbarButton
                           onClick={() => {
                             if(!this.state.isTPS) {
-                              this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_THIRD_PERSON_NEAR);
-                              this.props.store.update({
-                                preferences: { viewMode: CAMERA_MODE_THIRD_PERSON_NEAR }
-                              })
+                              localStorage.setItem("viewMode", 0);
                               this.setState({ isTPS: true });
                             } else if(this.state.isTPS) {
-                              this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_FIRST_PERSON);
-                              this.props.store.update({
-                                preferences: { viewMode: CAMERA_MODE_FIRST_PERSON }
-                              })
+                              localStorage.setItem("viewMode", 1);
                               this.setState({ isTPS: false });
                             }
                           }}
