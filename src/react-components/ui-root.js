@@ -1671,13 +1671,13 @@ class UIRoot extends Component {
                           onClick={() => {
                             if(!this.state.isTPS) {
                               CameraSystem.mode = CAMERA_MODE_THIRD_PERSON_NEAR
-                              store.update({
+                              this.props.store.update({
                                 preferences: { viewMode: CAMERA_MODE_THIRD_PERSON_NEAR }
                               })
                               this.setState({ isTPS: true });
                             } else if(this.state.isTPS) {
                               CameraSystem.mode = CAMERA_MODE_FIRST_PERSON
-                              store.update({
+                              this.props.store.update({
                                 preferences: { viewMode: CAMERA_MODE_FIRST_PERSON }
                               })
                               this.setState({ isTPS: false });
