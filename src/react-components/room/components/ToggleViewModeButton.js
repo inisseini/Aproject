@@ -17,7 +17,7 @@ const ToggleViewModeToolbarButton = ({ onClick, selected }) => {
         // @ts-ignore
         onClick={onClick}
         statusColor={unreadMessages ? "unread" : undefined}
-        icon={selected ? <ChangeIcon fill="#007ab8" /> : <ChangeIcon fill="#ffffff" />}
+        icon={selected ? <ChangeIcon fill="#007ab8" width="50%"/> : <ChangeIcon fill="#ffffff" width="50%"/>}
         preset="accent4"
         label="視点切り替え"
         selected={selected}

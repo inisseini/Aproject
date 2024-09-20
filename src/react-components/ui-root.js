@@ -105,7 +105,7 @@ import ChatToolbarButton from "./room/components/ChatToolbarButton/ChatToolbarBu
 import SeePlansCTA from "./room/components/SeePlansCTA/SeePlansCTA";
 
 import ToggleViewModeToolbarButton from "./room/components/ToggleViewModeButton";
-import { CAMERA_MODE_FIRST_PERSON, CAMERA_MODE_THIRD_PERSON_NEAR } from "../systems/camera-system";
+import { CameraSystem, CAMERA_MODE_FIRST_PERSON, CAMERA_MODE_THIRD_PERSON_NEAR } from "../systems/camera-system";
 
 const avatarEditorDebug = qsTruthy("avatarEditorDebug");
 
@@ -1670,10 +1670,10 @@ class UIRoot extends Component {
                         <ToggleViewModeToolbarButton
                           onClick={() => {
                             if(!this.state.isTPS) {
-                              this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_THIRD_PERSON_NEAR)
+                              CameraSystem.setMode(CAMERA_MODE_THIRD_PERSON_NEAR)
                               this.setState({ isTPS: true });
                             } else if(this.state.isTPS) {
-                              this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_FIRST_PERSON)
+                              CameraSystem.setMode(CAMERA_MODE_FIRST_PERSON)
                               this.setState({ isTPS: false });
                             }
                           }}
