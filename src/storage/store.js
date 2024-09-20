@@ -165,7 +165,7 @@ export const SCHEMA = {
         enablePostEffects: { type: "bool", default: false },
         enableBloom: { type: "bool", default: true }, // only applies if post effects are enabled
         aaMode: { type: "string", default: AAModes.MSAA_4X }, // only applies if post effects are enabled
-        viewMode: { type: "number", default: CAMERA_MODE_FIRST_PERSON }
+        viewMode: { type: "number", default: 0 }
       }
     },
 
