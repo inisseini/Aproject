@@ -457,7 +457,7 @@ export class CameraSystem {
       }
       if (!this.enteredScene && entered) {
         this.enteredScene = true;
-        this.mode = CAMERA_MODE_THIRD_PERSON_NEAR;//CAMERA_MODE_FIRST_PERSON;
+        this.mode = CAMERA_MODE_FIRST_PERSON;
       }
       this.avatarPOVRotator = this.avatarPOVRotator || this.avatarPOV.components["pitch-yaw-rotator"];
       this.viewingCameraRotator = this.viewingCameraRotator || this.viewingCamera.el.components["pitch-yaw-rotator"];
