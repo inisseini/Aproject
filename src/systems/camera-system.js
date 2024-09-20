@@ -453,6 +453,8 @@ export class CameraSystem {
       this.viewingCamera.updateMatrix();
       this.viewingCamera.updateMatrixWorld();
 
+      this.mode = localStorage.getItem('viewMode');
+
       const entered = scene.is("entered");
       uiRoot = uiRoot || document.getElementById("ui-root");
       const isGhost = !entered && uiRoot && uiRoot.firstChild && uiRoot.firstChild.classList.contains("isGhost");
