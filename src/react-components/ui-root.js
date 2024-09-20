@@ -104,6 +104,9 @@ import { ChatContextProvider } from "./room/contexts/ChatContext";
 import ChatToolbarButton from "./room/components/ChatToolbarButton/ChatToolbarButton";
 import SeePlansCTA from "./room/components/SeePlansCTA/SeePlansCTA";
 
+import ToggleViewModeToolbarButton from "./room/components/ToggleViewModeButton";
+import { CAMERA_MODE_FIRST_PERSON, CAMERA_MODE_THIRD_PERSON_NEAR } from "../systems/camera-system";
+
 const avatarEditorDebug = qsTruthy("avatarEditorDebug");
 
 const IN_ROOM_MODAL_ROUTER_PATHS = ["/media"];
@@ -1659,6 +1662,20 @@ class UIRoot extends Component {
                         label={<FormattedMessage id="toolbar.enter-vr-button" defaultMessage="Enter VR" />}
                         onClick={() => exit2DInterstitialAndEnterVR(true)}
                       />
+                    )}
+                    {entered && (
+                      <>
+                        <ToggleViewModeToolbarButton
+                          onClick={() => {
+                            if(selected) {
+                              this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_THIRD_PERSON_NEAR)
+                            } else {
+                              this.props.scene.systems["hubs-systems"].cameraSystem.setMode(CAMERA_MODE_FIRST_PERSON)
+                            }
+                          }}
+                          selected={false}
+                        />
+                      </>
                     )}
                   </>
                 }

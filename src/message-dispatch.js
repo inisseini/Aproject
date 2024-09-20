@@ -63,7 +63,6 @@ export default class MessageDispatch extends EventTarget {
     const isSlash = message.body !== undefined ? message.body.includes("///") : false;
     if (isSlash) {
       const chatBodyList = message.body.split("///");
-      console.log(chatBodyList);
       
       if (
         chatBodyList[0] === "systemMessage" &&
@@ -73,10 +72,10 @@ export default class MessageDispatch extends EventTarget {
       ) {
         const mail = window.APP.hubChannel.store.state.credentials.email;
         const admin = chatBodyList[3];
-        console.log(mail, admin);
         const message =
             "systemMessage///rollcall///" + `${mail}` + "///to///" + `${admin}`;
           document.getElementById("avatar-rig").messageDispatch.dispatch(message);
+        return;
       } else if(
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[1] === "rollcall" &&
@@ -84,6 +83,7 @@ export default class MessageDispatch extends EventTarget {
         chatBodyList[4] === window.APP.hubChannel.store.state.profile.displayName
       ) {
         console.log('rollcall', chatBodyList[2]);
+        return;
       }else {
         this.addToPresenceLog(message);
         this.dispatchEvent(new CustomEvent("message", { detail: message }));
