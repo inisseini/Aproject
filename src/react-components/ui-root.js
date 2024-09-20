@@ -1670,10 +1670,10 @@ class UIRoot extends Component {
                         <ToggleViewModeToolbarButton
                           onClick={() => {
                             if(!this.state.isTPS) {
-                              CameraSystem.setMode(CAMERA_MODE_THIRD_PERSON_NEAR)
+                              CameraSystem.mode = CAMERA_MODE_THIRD_PERSON_NEAR
                               this.setState({ isTPS: true });
                             } else if(this.state.isTPS) {
-                              CameraSystem.setMode(CAMERA_MODE_FIRST_PERSON)
+                              CameraSystem.mode = CAMERA_MODE_FIRST_PERSON
                               this.setState({ isTPS: false });
                             }
                           }}
