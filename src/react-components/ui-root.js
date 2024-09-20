@@ -1683,7 +1683,6 @@ class UIRoot extends Component {
                               this.setState({ isTPS: false });
                             }
                           }}
-                          selected={false}
                         />
                       </>
                     )}

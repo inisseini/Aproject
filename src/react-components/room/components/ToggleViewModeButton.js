@@ -6,7 +6,7 @@ import React, { useContext } from "react";
 import { ChatContext } from "../contexts/ChatContext";
 import { ToolTip } from "@mozilla/lilypad-ui";
 
-const ToggleViewModeToolbarButton = ({ onClick, selected }) => {
+const ToggleViewModeToolbarButton = ({ onClick }) => {
   const { unreadMessages } = useContext(ChatContext);
   const description = "視点を切り替えることができます";
 
@@ -17,10 +17,9 @@ const ToggleViewModeToolbarButton = ({ onClick, selected }) => {
         // @ts-ignore
         onClick={onClick}
         statusColor={unreadMessages ? "unread" : undefined}
-        icon={selected ? <ChangeIcon fill="#007ab8" width="50%"/> : <ChangeIcon fill="#ffffff" width="50%"/>}
+        icon={ <ChangeIcon fill="#007ab8" width="50%"/> }
         preset="accent4"
         label="視点切り替え"
-        selected={selected}
       />
     </ToolTip>
   );
