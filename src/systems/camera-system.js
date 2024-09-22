@@ -438,16 +438,8 @@ export class CameraSystem {
 
       if(!localStorage.getItem("viewMode")){
         localStorage.setItem("viewMode", 0);
-      } else {
+      } else if(this.mode !== CAMERA_MODE_INSPECT) {
         this.mode = parseInt(localStorage.getItem("viewMode"), 10);
-        {/*if (this.mode === 1) { // TPSモードの場合
-          tmpMat.makeTranslation(0, 1, 3); // カメラ位置を設定（第三者視点用）
-          this.avatarRig.object3D.updateMatrices();
-          this.viewingRig.object3D.matrixWorld.copy(this.avatarRig.object3D.matrixWorld).multiply(tmpMat);
-          setMatrixWorld(this.viewingRig.object3D, this.viewingRig.object3D.matrixWorld);
-          this.avatarPOV.object3D.quaternion.copy(this.viewingCamera.quaternion);
-          this.avatarPOV.object3D.matrixNeedsUpdate = true;
-        } */}
       }
 
       const entered = scene.is("entered");
@@ -523,11 +515,15 @@ export class CameraSystem {
         }
       } else if (this.mode === CAMERA_MODE_THIRD_PERSON_NEAR || this.mode === CAMERA_MODE_THIRD_PERSON_FAR) {
         if (this.mode === CAMERA_MODE_THIRD_PERSON_NEAR) {
-          tmpMat.makeTranslation(0, 1, 3);
+          tmpMat.makeTranslation(0, 0.5, 1.8);
         } else {
           tmpMat.makeTranslation(0, 2, 8);
         }
         this.avatarRig.object3D.updateMatrices();
+
+        this.viewingCameraRotator.on = false
+        setMatrixWorld(this.viewingRig.object3D, this.avatarRig.object3D.matrixWorld)
+
         this.viewingRig.object3D.matrixWorld.copy(this.avatarRig.object3D.matrixWorld).multiply(tmpMat);
         setMatrixWorld(this.viewingRig.object3D, this.viewingRig.object3D.matrixWorld);
         this.avatarPOV.object3D.quaternion.copy(this.viewingCamera.quaternion);
