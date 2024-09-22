@@ -523,8 +523,11 @@ export class CameraSystem {
 
         this.viewingCameraRotator.on = false
         setMatrixWorld(this.viewingRig.object3D, this.avatarRig.object3D.matrixWorld)
+        this.avatarRig.object3D.updateMatrices();
+        this.avatarPOV.object3D.updateMatrices()
+        setMatrixWorld(this.viewingCamera, this.avatarPOV.object3D.matrixWorld.multiply(tmpMat))
 
-        this.viewingRig.object3D.matrixWorld.copy(this.avatarRig.object3D.matrixWorld).multiply(tmpMat);
+        //this.viewingRig.object3D.matrixWorld.copy(this.avatarRig.object3D.matrixWorld).multiply(tmpMat);
         setMatrixWorld(this.viewingRig.object3D, this.viewingRig.object3D.matrixWorld);
         this.avatarPOV.object3D.quaternion.copy(this.viewingCamera.quaternion);
         this.avatarPOV.object3D.matrixNeedsUpdate = true;
