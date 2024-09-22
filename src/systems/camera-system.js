@@ -447,20 +447,7 @@ export class CameraSystem {
           setMatrixWorld(this.viewingRig.object3D, this.viewingRig.object3D.matrixWorld);
           this.avatarPOV.object3D.quaternion.copy(this.viewingCamera.quaternion);
           this.avatarPOV.object3D.matrixNeedsUpdate = true;
-        } else if (this.mode === 0) { // FPSモードの場合
-          this.viewingCameraRotator.on = false;
-          this.avatarRig.object3D.updateMatrices();
-          setMatrixWorld(this.viewingRig.object3D, this.avatarRig.object3D.matrixWorld);
-          if (scene.is("vr-mode")) {
-            this.viewingCamera.updateMatrices();
-            setMatrixWorld(this.avatarPOV.object3D, this.viewingCamera.matrixWorld);
-          } else {
-            this.avatarPOV.object3D.updateMatrices();
-            this.avatarPOV.object3D.matrixWorld.decompose(position, quat, scale);
-            tmpMat.compose(position, quat, V_ONE);
-            setMatrixWorld(this.viewingCamera, tmpMat);
-          }
-        }
+        } 
       }
 
       console.log(this.mode, typeof this.mode);
