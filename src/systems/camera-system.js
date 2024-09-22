@@ -441,7 +441,7 @@ export class CameraSystem {
       } else {
         this.mode = parseInt(localStorage.getItem("viewMode"), 10);
         if (this.mode === 1) { // TPSモードの場合
-          tmpMat.makeTranslation(0, 2, 8); // カメラ位置を設定（第三者視点用）
+          tmpMat.makeTranslation(0, 1, 3); // カメラ位置を設定（第三者視点用）
           this.avatarRig.object3D.updateMatrices();
           this.viewingRig.object3D.matrixWorld.copy(this.avatarRig.object3D.matrixWorld).multiply(tmpMat);
           setMatrixWorld(this.viewingRig.object3D, this.viewingRig.object3D.matrixWorld);
@@ -449,9 +449,6 @@ export class CameraSystem {
           this.avatarPOV.object3D.matrixNeedsUpdate = true;
         } 
       }
-
-      console.log(this.mode, typeof this.mode);
-      
 
       const entered = scene.is("entered");
       uiRoot = uiRoot || document.getElementById("ui-root");
