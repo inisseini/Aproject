@@ -28,6 +28,7 @@ export default class ProfileEntryPanel extends Component {
   state = {
     avatarId: null,
     displayName: null,
+    team: null,
     avatar: null,
     pronouns: null
   };
@@ -43,8 +44,8 @@ export default class ProfileEntryPanel extends Component {
   }
 
   getStateFromProfile = () => {
-    const { displayName, avatarId, pronouns } = this.props.store.state.profile;
-    return { displayName, avatarId, pronouns };
+    const { displayName, avatarId, pronouns, team } = this.props.store.state.profile;
+    return { displayName, avatarId, pronouns, team };
   };
 
   storeUpdated = () => this.setState(this.getStateFromProfile());
@@ -52,7 +53,7 @@ export default class ProfileEntryPanel extends Component {
   saveStateAndFinish = e => {
     e && e.preventDefault();
 
-    const { displayName, pronouns } = this.props.store.state.profile;
+    const { displayName, pronouns, team } = this.props.store.state.profile;
     const { hasChangedNameOrPronouns } = this.props.store.state.activity;
 
     const hasChangedNowOrPreviously =
@@ -64,6 +65,7 @@ export default class ProfileEntryPanel extends Component {
       },
       profile: {
         displayName: this.state.displayName,
+        team: this.state.team,
         avatarId: this.state.avatarId,
         pronouns: this.state.pronouns
       }
@@ -126,14 +128,18 @@ export default class ProfileEntryPanel extends Component {
   render() {
     const avatarSettingsProps = {
       displayNameInputRef: inp => (this.nameInput = inp),
+      teamInputRef: inp => (this.teamInput = inp),
       pronounsInputRef: inp => (this.pronounsInput = inp),
       disableDisplayNameInput: !!this.props.displayNameOverride,
       displayName: this.props.displayNameOverride ? this.props.displayNameOverride : this.state.displayName,
+      team: this.state.team,
       pronouns: this.state.pronouns,
       displayNamePattern: this.props.store.schema.definitions.profile.properties.displayName.pattern,
+      teamPattern: this.props.store.schema.definitions.profile.properties.team.pattern,
       pronounsPattern: this.props.store.schema.definitions.profile.properties.pronouns.pattern,
       onChangeDisplayName: e => this.setState({ displayName: e.target.value }),
       onChangePronouns: e => this.setState({ pronouns: e.target.value }),
+      onChangeTeam: e => this.setState({ team: e.target.value }),
       avatarPreview: <AvatarPreview avatarGltfUrl={this.state.avatar && this.state.avatar.gltf_url} />,
       onChangeAvatar: e => {
         e.preventDefault();

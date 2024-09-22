@@ -8,14 +8,18 @@ import { FormattedMessage } from "react-intl";
 
 export function AvatarSettingsContent({
   displayName,
+  team,
   pronouns,
   displayNameInputRef,
+  teamInputRef,
   pronounsInputRef,
   disableDisplayNameInput,
   onChangeDisplayName,
+  onChangeTeam,
   onChangePronouns,
   avatarPreview,
   displayNamePattern,
+  teamPattern,
   pronounsPattern,
   onChangeAvatar,
   ...rest
@@ -37,6 +41,17 @@ export function AvatarSettingsContent({
           />
         }
         ref={displayNameInputRef}
+      />
+      <TextInputField
+        disabled={false}
+        label={
+          <FormattedMessage id="avatar-settings-content.display-team-label" defaultMessage="team" />
+        }
+        value={team}
+        pattern={teamPattern}
+        spellCheck="false"
+        onChange={onChangeTeam}
+        ref={teamInputRef}
       />
       <TextInputField
         label={<FormattedMessage id="avatar-settings-content.pronouns-label" defaultMessage="Pronouns (optional)" />}

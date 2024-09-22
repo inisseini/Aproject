@@ -440,14 +440,14 @@ export class CameraSystem {
         localStorage.setItem("viewMode", 0);
       } else {
         this.mode = parseInt(localStorage.getItem("viewMode"), 10);
-        if (this.mode === 1) { // TPSモードの場合
+        {/*if (this.mode === 1) { // TPSモードの場合
           tmpMat.makeTranslation(0, 1, 3); // カメラ位置を設定（第三者視点用）
           this.avatarRig.object3D.updateMatrices();
           this.viewingRig.object3D.matrixWorld.copy(this.avatarRig.object3D.matrixWorld).multiply(tmpMat);
           setMatrixWorld(this.viewingRig.object3D, this.viewingRig.object3D.matrixWorld);
           this.avatarPOV.object3D.quaternion.copy(this.viewingCamera.quaternion);
           this.avatarPOV.object3D.matrixNeedsUpdate = true;
-        } 
+        } */}
       }
 
       const entered = scene.is("entered");
