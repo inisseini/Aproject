@@ -436,10 +436,35 @@ export class CameraSystem {
       this.viewingCamera.updateMatrix();
       this.viewingCamera.updateMatrixWorld();
 
-      {/*if(!localStorage.getItem("viewMode")){
+      if(!localStorage.getItem("viewMode")){
         localStorage.setItem("viewMode", 0);
+      } else {
+        this.mode = parseInt(localStorage.getItem("viewMode"), 10);
+        if (this.mode === 1) { // TPSモードの場合
+          tmpMat.makeTranslation(0, 2, 8); // カメラ位置を設定（第三者視点用）
+          this.avatarRig.object3D.updateMatrices();
+          this.viewingRig.object3D.matrixWorld.copy(this.avatarRig.object3D.matrixWorld).multiply(tmpMat);
+          setMatrixWorld(this.viewingRig.object3D, this.viewingRig.object3D.matrixWorld);
+          this.avatarPOV.object3D.quaternion.copy(this.viewingCamera.quaternion);
+          this.avatarPOV.object3D.matrixNeedsUpdate = true;
+        } else if (this.mode === 0) { // FPSモードの場合
+          this.viewingCameraRotator.on = false;
+          this.avatarRig.object3D.updateMatrices();
+          setMatrixWorld(this.viewingRig.object3D, this.avatarRig.object3D.matrixWorld);
+          if (scene.is("vr-mode")) {
+            this.viewingCamera.updateMatrices();
+            setMatrixWorld(this.avatarPOV.object3D, this.viewingCamera.matrixWorld);
+          } else {
+            this.avatarPOV.object3D.updateMatrices();
+            this.avatarPOV.object3D.matrixWorld.decompose(position, quat, scale);
+            tmpMat.compose(position, quat, V_ONE);
+            setMatrixWorld(this.viewingCamera, tmpMat);
+          }
+        }
       }
-      this.mode = localStorage.getItem('viewMode');*/}
+
+      console.log(this.mode, typeof this.mode);
+      
 
       const entered = scene.is("entered");
       uiRoot = uiRoot || document.getElementById("ui-root");
