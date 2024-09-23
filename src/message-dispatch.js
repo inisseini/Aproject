@@ -181,12 +181,8 @@ export default class MessageDispatch extends EventTarget {
         let dividedList;
         if(chatBodyList[6] === "reset") {
           dividedList = this.shuffleAndDivide(nameList);
-          console.log('reset!');
-          
         } else {
           dividedList = this.assignAndBalanceNumbers(nameList, alreadyNum);
-          console.log("not reset!");
-          
         }
 
         console.log('dividedList =', dividedList);
