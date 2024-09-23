@@ -136,7 +136,7 @@ export default class MessageDispatch extends EventTarget {
     });
   
     // 指定した名前の番号を返す
-    return nameToNumber[name] || null; // 該当しない場合はnullを返す
+    return String(nameToNumber[name]) || null; // 該当しない場合はnullを返す
   }
 
   receive(message) {
@@ -181,8 +181,12 @@ export default class MessageDispatch extends EventTarget {
         let dividedList;
         if(chatBodyList[6] === "reset") {
           dividedList = this.shuffleAndDivide(nameList);
+          console.log('reset!');
+          
         } else {
           dividedList = this.assignAndBalanceNumbers(nameList);
+          console.log("not reset!");
+          
         }
 
         console.log('dividedList =', dividedList);
@@ -198,7 +202,6 @@ export default class MessageDispatch extends EventTarget {
         const adminList = chatBodyList[4] ? chatBodyList[4].split(",") : [];
         if(adminList.includes(window.APP.hubChannel.store.state.profile.displayName)) return;
         const result = this.getNumberByName(chatBodyList[2], window.APP.hubChannel.store.state.profile.displayName);
-        console.log('test result = ', result);
         window.APP.hubChannel.store.update({
           profile: {
             team: result
