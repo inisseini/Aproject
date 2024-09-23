@@ -83,44 +83,41 @@ export default class MessageDispatch extends EventTarget {
     return result.slice(0, -1);
   }
 
-  assignAndBalanceNumbers(people) {
-    // シャッフルしてランダム化
-    for (let i = people.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [people[i], people[j]] = [people[j], people[i]];
-    }
-  
-    // すでに番号を持っている人を分類
+  assignAndBalanceNumbers(names, numbers) {
+    // グループごとの配列を用意
     const existingGroups = [[], [], [], [], [], []];
     const unassigned = [];
-  
-    people.forEach(person => {
-      if (person.number) {
-        existingGroups[person.number - 1].push(person);
+
+    // 既に番号がある人を対応するグループに分類し、番号がない人は unassigned に追加
+    names.forEach((name, index) => {
+      const number = numbers[index];
+      if (number) {
+        existingGroups[number - 1].push(name);  // 1から6に対応するグループに分類
       } else {
-        unassigned.push(person);
+        unassigned.push(name);  // 番号がない人をリストに追加
       }
     });
-  
-    // グループをできるだけ均等にするため、未割り当ての人を追加
-    let minGroupSize = Math.floor(people.length / 6); // 各グループの最小サイズ
-    let extraPeople = people.length % 6; // 余り人数
-  
+
+    // グループのサイズを均等にするために、番号が振られていない人にランダムで番号を割り当てる
+    let minGroupSize = Math.floor((names.length) / 6); // 各グループの最小人数
+    let extraPeople = names.length % 6; // 余りの人数
+
     unassigned.forEach(person => {
+      // グループに追加（余りの人数がある場合、1人ずつ追加）
       let groupIndex = existingGroups.findIndex(group => group.length < minGroupSize + (extraPeople > 0 ? 1 : 0));
       existingGroups[groupIndex].push(person);
-      if (existingGroups[groupIndex].length === minGroupSize + 1) extraPeople--; // 余りを処理
+      if (existingGroups[groupIndex].length === minGroupSize + 1) extraPeople--; // 余りを調整
     });
-  
-    // 結果を文字列としてフォーマット
+
+    // 結果を「あああ：1、いいい：3、」のような形式に変換
     let result = '';
     existingGroups.forEach((group, index) => {
-      group.forEach(person => {
-        result += `${person.name}：${index + 1}、`;
+      group.forEach(name => {
+        result += `${name}:${index + 1}、`;
       });
     });
-  
-    // 最後の「、」を削除して返す
+
+    // 最後の「、」を取り除いて返す
     return result.slice(0, -1);
   }
 
@@ -175,6 +172,9 @@ export default class MessageDispatch extends EventTarget {
       ) {
         const presences = window.APP.hubChannel.presence.state;
         const wholeList = Object.keys(presences).map(e => presences[e].metas[0].profile.displayName);
+        const alreadyNum = Object.keys(presences).map(e => presences[e].metas[0].profile.team);
+        console.log('alreadyNum =', alreadyNum);
+        
         const adminList = chatBodyList[5] ? chatBodyList[5].split(",") : [];
         const nameList = wholeList.filter(item => !adminList.includes(item));
 
@@ -184,7 +184,7 @@ export default class MessageDispatch extends EventTarget {
           console.log('reset!');
           
         } else {
-          dividedList = this.assignAndBalanceNumbers(nameList);
+          dividedList = this.assignAndBalanceNumbers(nameList, alreadyNum);
           console.log("not reset!");
           
         }
