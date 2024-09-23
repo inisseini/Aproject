@@ -83,6 +83,47 @@ export default class MessageDispatch extends EventTarget {
     return result.slice(0, -1);
   }
 
+  assignAndBalanceNumbers(people) {
+    // シャッフルしてランダム化
+    for (let i = people.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [people[i], people[j]] = [people[j], people[i]];
+    }
+  
+    // すでに番号を持っている人を分類
+    const existingGroups = [[], [], [], [], [], []];
+    const unassigned = [];
+  
+    people.forEach(person => {
+      if (person.number) {
+        existingGroups[person.number - 1].push(person);
+      } else {
+        unassigned.push(person);
+      }
+    });
+  
+    // グループをできるだけ均等にするため、未割り当ての人を追加
+    let minGroupSize = Math.floor(people.length / 6); // 各グループの最小サイズ
+    let extraPeople = people.length % 6; // 余り人数
+  
+    unassigned.forEach(person => {
+      let groupIndex = existingGroups.findIndex(group => group.length < minGroupSize + (extraPeople > 0 ? 1 : 0));
+      existingGroups[groupIndex].push(person);
+      if (existingGroups[groupIndex].length === minGroupSize + 1) extraPeople--; // 余りを処理
+    });
+  
+    // 結果を文字列としてフォーマット
+    let result = '';
+    existingGroups.forEach((group, index) => {
+      group.forEach(person => {
+        result += `${person.name}：${index + 1}、`;
+      });
+    });
+  
+    // 最後の「、」を削除して返す
+    return result.slice(0, -1);
+  }
+
   getNumberByName(str, name) {
     // 文字列を「、」で分割して、それぞれの名前と番号のペアを取得
     const pairs = str.split('、');
@@ -136,10 +177,18 @@ export default class MessageDispatch extends EventTarget {
         const wholeList = Object.keys(presences).map(e => presences[e].metas[0].profile.displayName);
         const adminList = chatBodyList[5] ? chatBodyList[5].split(",") : [];
         const nameList = wholeList.filter(item => !adminList.includes(item));
-        const shuffleAndDivideList = this.shuffleAndDivide(nameList);
-        console.log('test shuffleanddividelist = ', shuffleAndDivideList);
+
+        let dividedList;
+        if(chatBodyList[6] === "reset") {
+          dividedList = this.shuffleAndDivide(nameList);
+        } else {
+          dividedList = this.assignAndBalanceNumbers(nameList);
+        }
+
+        console.log('dividedList =', dividedList);
+        
         const message =
-            "systemMessage///grouping///" + `${shuffleAndDivideList}` + "///without///" + chatBodyList[5];
+            "systemMessage///grouping///" + `${dividedList}` + "///without///" + chatBodyList[5];
         document.getElementById("avatar-rig").messageDispatch.dispatch(message);
       } else if(
         chatBodyList[0] === "systemMessage" &&
