@@ -57,6 +57,47 @@ export default class MessageDispatch extends EventTarget {
     }, 20000);
   }
 
+  shuffleAndDivide(array) {
+    // シャッフル
+    for (let i = names.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [names[i], names[j]] = [names[j], names[i]];
+    }
+
+    // 6等分に分割
+    const chunkSize = Math.ceil(names.length / 6);
+    const dividedList = [];
+    for (let i = 0; i < names.length; i += chunkSize) {
+      dividedList.push(names.slice(i, i + chunkSize));
+    }
+
+    // 結果を文字列としてまとめる
+    let result = '';
+    dividedList.forEach((group, index) => {
+      group.forEach(name => {
+        result += `${name}:${index + 1}、`; // グループ番号を1から始める
+      });
+    });
+
+    // 最後の「、」を削除
+    return result.slice(0, -1);
+  }
+
+  getNumberByName(str, name) {
+    // 文字列を「、」で分割して、それぞれの名前と番号のペアを取得
+    const pairs = str.split('、');
+    
+    // 名前と番号のペアをオブジェクトに格納
+    const nameToNumber = {};
+    pairs.forEach(pair => {
+      const [n, number] = pair.split(':'); // 「：」で名前と番号を分割
+      nameToNumber[n] = parseInt(number, 10);
+    });
+  
+    // 指定した名前の番号を返す
+    return nameToNumber[name] || null; // 該当しない場合はnullを返す
+  }
+
   receive(message) {
     if (isLockedDownDemoRoom()) return;
 
@@ -87,12 +128,29 @@ export default class MessageDispatch extends EventTarget {
       } else if(
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[1] === "grouping" &&
-        chatBodyList[2] === "without"
+        chatBodyList[2] === "from" &&
+        chatBodyList[3] === window.APP.hubChannel.store.state.profile.displayName,
+        chatBodyList[4] === "without"
       ) {
         const presences = window.APP.hubChannel.presence.state;
-        console.log('test',presences);
-        const namelist = Object.keys(presences).map(e => presences[e].metas[0].profile.displayName);
-        console.log('test', namelist);
+        const wholeList = Object.keys(presences).map(e => presences[e].metas[0].profile.displayName);
+        const adminList = chatBodyList[5] ? chatBodyList[5].split(",") : [];
+        const nameList = wholeList.filter(item => !adminList.includes(item));
+        const shuffleAndDivideList = this.shuffleAndDivide(nameList);
+        console.log('test shuffleanddividelist = ', shuffleAndDivideList);
+        const message =
+            "systemMessage///grouping///" + `${shuffleAndDivideList}` + "///without///" + chatBodyList[5];
+        document.getElementById("avatar-rig").messageDispatch.dispatch(message);
+      } else if(
+        chatBodyList[0] === "systemMessage" &&
+        chatBodyList[1] === "grouping" &&
+        chatBodyList[3] === "without"
+      ) {
+        const adminList = chatBodyList[4] ? chatBodyList[4].split(",") : [];
+        if(adminList.includes(window.APP.hubChannel.store.state.profile.displayName)) return;
+        const result = this.getNumberByName(chatBodyList[2], window.APP.hubChannel.store.state.profile.displayName);
+        console.log('test result = ', result);
+        window.APP.hubChannel.store.state.profile.team = result;
       } else {
         this.addToPresenceLog(message);
         this.dispatchEvent(new CustomEvent("message", { detail: message }));
