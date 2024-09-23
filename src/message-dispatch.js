@@ -91,8 +91,8 @@ export default class MessageDispatch extends EventTarget {
       ) {
         const presences = window.APP.hubChannel.presence.state;
         console.log('test',presences);
-        console.log('test', window.APP.hubChannel)
-        
+        const namelist = Object.keys(presences).map(e => presences[e].metas[0].profile.displayName);
+        console.log('test', namelist);
       } else {
         this.addToPresenceLog(message);
         this.dispatchEvent(new CustomEvent("message", { detail: message }));
