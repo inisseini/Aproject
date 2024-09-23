@@ -1242,8 +1242,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
 
   events.on(`hub:change`, ({ key, previous, current }) => {
-    console.log('profile change');
-    
     if (
       previous.presence === current.presence ||
       current.presence !== "room" ||
@@ -1259,7 +1257,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   });
   events.on(`hub:change`, ({ previous, current }) => {
-    console.log('profile change');
     if (previous.profile.displayName !== current.profile.displayName) {
       messageDispatch.receive({
         type: "display_name_changed",
@@ -1269,7 +1266,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
   events.on(`hub:change`, ({ key, previous, current }) => {
-    console.log('profile change');
     if (
       key === hubChannel.channel.socket.params().session_id &&
       previous.profile.avatarId !== current.profile.avatarId
@@ -1278,7 +1274,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   });
   events.on(`hub:change`, ({ key, current }) => {
-    console.log('profile change');
     scene.emit("presence_updated", {
       sessionId: key,
       profile: current.profile,
