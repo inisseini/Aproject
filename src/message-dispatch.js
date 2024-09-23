@@ -84,7 +84,16 @@ export default class MessageDispatch extends EventTarget {
       ) {
         console.log('rollcall', chatBodyList[2]);
         return;
-      }else {
+      } else if(
+        chatBodyList[0] === "systemMessage" &&
+        chatBodyList[1] === "grouping" &&
+        chatBodyList[2] === "without"
+      ) {
+        const presences = window.APP.hubChannel.presence.state;
+        console.log('test',presences);
+        console.log('test', window.APP.hubChannel)
+        
+      } else {
         this.addToPresenceLog(message);
         this.dispatchEvent(new CustomEvent("message", { detail: message }));
       }
