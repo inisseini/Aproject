@@ -504,6 +504,9 @@ export class CameraSystem {
         this.viewingCameraRotator.on = false;
         this.avatarRig.object3D.updateMatrices();
         setMatrixWorld(this.viewingRig.object3D, this.avatarRig.object3D.matrixWorld);
+
+        this.viewingCamera.layers.disable(Layers.CAMERA_LAYER_THIRD_PERSON_ONLY)
+        this.viewingCamera.layers.enable(Layers.CAMERA_LAYER_FIRST_PERSON_ONLY)
         if (scene.is("vr-mode")) {
           this.viewingCamera.updateMatrices();
           setMatrixWorld(this.avatarPOV.object3D, this.viewingCamera.matrixWorld);
@@ -515,10 +518,14 @@ export class CameraSystem {
         }
       } else if (this.mode === CAMERA_MODE_THIRD_PERSON_NEAR || this.mode === CAMERA_MODE_THIRD_PERSON_FAR) {
         if (this.mode === CAMERA_MODE_THIRD_PERSON_NEAR) {
-          tmpMat.makeTranslation(0, 0.3, 2);
+          tmpMat.makeTranslation(0, 0.5, 1.8);
         } else {
           tmpMat.makeTranslation(0, 2, 8);
         }
+
+        this.viewingCamera.layers.disable(Layers.CAMERA_LAYER_FIRST_PERSON_ONLY)
+        this.viewingCamera.layers.enable(Layers.CAMERA_LAYER_THIRD_PERSON_ONLY)
+      
         this.avatarRig.object3D.updateMatrices();
 
         this.viewingCameraRotator.on = false
