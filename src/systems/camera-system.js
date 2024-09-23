@@ -436,6 +436,9 @@ export class CameraSystem {
       this.viewingCamera.updateMatrix();
       this.viewingCamera.updateMatrixWorld();
 
+      console.log(this.viewingCamera);
+      
+
       if(!localStorage.getItem("viewMode")){
         localStorage.setItem("viewMode", 0);
       } else if(this.mode !== CAMERA_MODE_INSPECT) {
