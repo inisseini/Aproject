@@ -1,6 +1,7 @@
 import {
   getCurrentHubId,
   updateVRHudPresenceCount,
+  updateVRHudTeamCount,
   updateSceneCopresentState,
   createHubChannelParams,
   isLockedDownDemoRoom
@@ -1298,6 +1299,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     APP.hideHubPresenceEvents = false;
   });
   events.on(`hub:sync`, updateVRHudPresenceCount);
+  events.on(`hub:sync`, updateVRHudTeamCount);
   events.on(`hub:sync`, ({ presence }) => {
     updateSceneCopresentState(presence, scene);
   });

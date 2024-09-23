@@ -16,6 +16,13 @@ export function updateVRHudPresenceCount({ presence }) {
   const vrHudPresenceCount = document.querySelector("#hud-presence-count");
   vrHudPresenceCount.setAttribute("text", "value", occupantCount.toString());
 }
+
+export function updateVRHudTeamCount({ presence }) {
+  const vrHudTeamCount = document.querySelector("#hud-team-count");
+  const teamNum = window.APP.hubChannel.store.state.profile.team ? `TEAM${window.APP.hubChannel.store.state.profile.team}` : '';
+  vrHudTeamCount.setAttribute("text", "value", teamNum);
+}
+
 export function updateSceneCopresentState(presence, scene) {
   const occupantCount = Object.getOwnPropertyNames(presence.state).length;
   if (occupantCount > 1) {
