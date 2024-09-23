@@ -515,7 +515,7 @@ export class CameraSystem {
         }
       } else if (this.mode === CAMERA_MODE_THIRD_PERSON_NEAR || this.mode === CAMERA_MODE_THIRD_PERSON_FAR) {
         if (this.mode === CAMERA_MODE_THIRD_PERSON_NEAR) {
-          tmpMat.makeTranslation(0, 0.5, 1.8);
+          tmpMat.makeTranslation(0, 0.3, 2);
         } else {
           tmpMat.makeTranslation(0, 2, 8);
         }
