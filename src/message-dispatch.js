@@ -151,6 +151,11 @@ export default class MessageDispatch extends EventTarget {
         const result = this.getNumberByName(chatBodyList[2], window.APP.hubChannel.store.state.profile.displayName);
         console.log('test result = ', result);
         window.APP.hubChannel.store.state.profile.team = result;
+        if(this.scene.is(vr-mode)) {
+          const vrHudTeamCount = document.querySelector("#hud-team-count");
+          const teamNum = `TEAM${result}`;
+          vrHudTeamCount.setAttribute("text", "value", teamNum);
+        }
       } else {
         this.addToPresenceLog(message);
         this.dispatchEvent(new CustomEvent("message", { detail: message }));

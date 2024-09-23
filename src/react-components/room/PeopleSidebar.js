@@ -150,8 +150,6 @@ export function PeopleSidebar({
             const DeviceIcon = getDeviceIconComponent(person.context);
             const VoiceIcon = getVoiceIconComponent(person.micPresence);
 
-            const team = person.profile?.team ? `${person.profile.team}）` : "";
-
             return (
               <ButtonListItem
                 className={styles.person}
@@ -177,7 +175,7 @@ export function PeopleSidebar({
                     )}
                   </ToolTip>
                 )}
-                <p>{team}{getPersonName(person, intl)}</p>
+                <p>{person.profile.team ? `${person.profile.team}）` : ""}{getPersonName(person, intl)}</p>
                 {person.roles.owner && (
                   <StarIcon
                     title={intl.formatMessage({ id: "people-sidebar.moderator-label", defaultMessage: "Moderator" })}
