@@ -145,7 +145,7 @@ export const SCHEMA = {
         disableMovement: { type: "bool", default: false },
         disableBackwardsMovement: { type: "bool", default: false },
         disableStrafing: { type: "bool", default: false },
-        disableTeleporter: { type: "bool", default: false },
+        disableTeleporter: { type: "bool", default: true },
         disableAutoPixelRatio: { type: "bool", default: false },
         movementSpeedModifier: { type: "number", default: 1 },
         disableEchoCancellation: { type: "bool", default: isFirefoxReality },
