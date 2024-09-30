@@ -203,7 +203,9 @@ export default class MessageDispatch extends EventTarget {
             team: result
           }
         });
-      } else {
+      } else if(
+        chatBodyList[0] !== "systemMessage"
+      ) {
         this.addToPresenceLog(message);
         this.dispatchEvent(new CustomEvent("message", { detail: message }));
       }
