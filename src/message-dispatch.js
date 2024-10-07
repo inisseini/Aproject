@@ -204,6 +204,16 @@ export default class MessageDispatch extends EventTarget {
           }
         });
       } else if(
+        chatBodyList[0] === "systemMessage" &&
+        chatBodyList[1] === "unGrouping" &&
+        chatBodyList[2] === window.APP.hubChannel.store.state.profile.displayName
+      ){
+        window.APP.hubChannel.store.update({
+          profile: {
+            team: null
+          }
+        });
+      } else if(
         chatBodyList[0] !== "systemMessage"
       ) {
         this.addToPresenceLog(message);
