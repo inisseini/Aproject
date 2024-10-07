@@ -1378,7 +1378,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     };
 
     if (scene.is("vr-mode")) {
-      createInWorldLogMessage(incomingMessage);
+      //createInWorldLogMessage(incomingMessage); //VLEAP
     }
 
     messageDispatch.receive(incomingMessage);
