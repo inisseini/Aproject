@@ -173,7 +173,6 @@ export default class MessageDispatch extends EventTarget {
         const presences = window.APP.hubChannel.presence.state;
         const wholeList = Object.keys(presences).map(e => presences[e].metas[0].profile.displayName);
         const alreadyNum = Object.keys(presences).map(e => presences[e].metas[0].profile.team);
-        console.log('alreadyNum =', alreadyNum);
         
         const adminList = chatBodyList[5] ? chatBodyList[5].split(",") : [];
         const nameList = wholeList.filter(item => !adminList.includes(item));
@@ -184,8 +183,6 @@ export default class MessageDispatch extends EventTarget {
         } else {
           dividedList = this.assignAndBalanceNumbers(nameList, alreadyNum);
         }
-
-        console.log('dividedList =', dividedList);
         
         const message =
             "systemMessage///grouping///" + `${dividedList}` + "///without///" + chatBodyList[5];
@@ -210,7 +207,7 @@ export default class MessageDispatch extends EventTarget {
       ){
         window.APP.hubChannel.store.update({
           profile: {
-            team: null
+            team: ""
           }
         });
       } else if(
