@@ -200,6 +200,11 @@ export default class MessageDispatch extends EventTarget {
             team: result
           }
         });
+        if(this.scene.is(vr-mode)) {
+          const vrHudTeamCount = document.querySelector("#hud-team-count");
+          const teamNum = window.APP.hubChannel.store.state.profile.team ? `TEAM${window.APP.hubChannel.store.state.profile.team}` : '';
+          vrHudTeamCount.setAttribute("text", "value", teamNum);
+        }
       } else if(
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[1] === "unGrouping" &&

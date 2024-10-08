@@ -17,6 +17,7 @@ export function updateVRHudPresenceCount({ presence }) {
   vrHudPresenceCount.setAttribute("text", "value", occupantCount.toString());
 }
 
+
 export function updateVRHudTeamCount({ presence }) {
   const vrHudTeamCount = document.querySelector("#hud-team-count");
   const teamNum = window.APP.hubChannel.store.state.profile.team ? `TEAM${window.APP.hubChannel.store.state.profile.team}` : '';
