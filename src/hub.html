@@ -752,9 +752,11 @@
                         position="-0.30 -0.005 0.001"></a-entity>
                     <a-entity class="invite-btn" position="0 0.18 0.01" scale="0.7 0.7 0.7" is-remote-hover-target
                         tags="singleActionButton: true;">
-                        <a-entity id="hud-team-count" text="textAlign:center;backgroundColor:#ff3464;">
+                        <a-entity id="hud-team-count">
                         </a-entity>
+                        
                     </a-entity>
+                    <a-plane color="blue" width="1" height="0.7s" position="0 0.18 0.02" material="shader: flat" radius="0.2"></a-plane>
                     <a-entity visible="false" vr-mode-toggle-visibility id="hud-tooltip" position="-0.2 -0.2 0"
                         rotation="-20 0 0" radius="0.025" opacity="0.35" class="hud bg">
                         <a-entity text="value: ; textAlign:center; fontSize: 0.06; outlineWidth: 2%;"
