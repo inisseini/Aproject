@@ -178,16 +178,18 @@ export default class MessageDispatch extends EventTarget {
         const presences = window.APP.hubChannel.presence.state; 
         const wholeList = Object.keys(presences).map(
           e => {
-            if(adminList.includes(presences[e].metas[0].profile.displayName)) return;
+            if(adminList.includes(presences[e].metas[0].profile.displayName)) return undefined;
             return presences[e].metas[0].profile.displayName;
           }
-        ); //ルームかロビーにいるユーザー全員のリスト
+        )
+        .filter(Boolean); //ルームかロビーにいるユーザー全員のリスト
         const alreadyNum = Object.keys(presences).map(
           e => {
-            if(adminList.includes(presences[e].metas[0].profile.displayName)) return;
+            if(adminList.includes(presences[e].metas[0].profile.displayName)) return undefined;
             return presences[e].metas[0].profile.team
           }
-        ); //すでに割り振られているチーム番号のリスト
+        )
+        .filter(Boolean); //すでに割り振られているチーム番号のリスト
         
         const nameList = wholeList.filter(item => !adminList.includes(item)); //グループ分けされるユーザーのリスト
 
@@ -201,6 +203,9 @@ export default class MessageDispatch extends EventTarget {
         } else {
           dividedList = this.assignAndBalanceNumbers(nameList, alreadyNum);
           console.log(red + "グループ分け実行" + reset);
+          console.log(red + "実行細目" + reset);
+          console.log("adminList=", adminList);
+          console.log("wholeList=", wholeList);
         }
         
         const message =
