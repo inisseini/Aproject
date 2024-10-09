@@ -139,6 +139,9 @@ export default class MessageDispatch extends EventTarget {
   receive(message) {
     if (isLockedDownDemoRoom()) return;
 
+    const red = "\u001b[31m";
+    const reset = "\u001b[0m";
+
     const isSlash = message.body !== undefined ? message.body.includes("///") : false;
     if (isSlash) {
       const chatBodyList = message.body.split("///");
@@ -161,7 +164,7 @@ export default class MessageDispatch extends EventTarget {
         chatBodyList[3] === "to" && 
         chatBodyList[4] === window.APP.hubChannel.store.state.profile.displayName
       ) {
-        console.log('rollcall', chatBodyList[2]);
+        console.log(red + 'rollcall' + reset, chatBodyList[2]);
         return;
       } else if(
         chatBodyList[0] === "systemMessage" &&
@@ -170,18 +173,34 @@ export default class MessageDispatch extends EventTarget {
         chatBodyList[3] === window.APP.hubChannel.store.state.profile.displayName,
         chatBodyList[4] === "without"
       ) {
-        const presences = window.APP.hubChannel.presence.state;
-        const wholeList = Object.keys(presences).map(e => presences[e].metas[0].profile.displayName);
-        const alreadyNum = Object.keys(presences).map(e => presences[e].metas[0].profile.team);
+        const adminList = chatBodyList[5] ? chatBodyList[5].split(",") : []; //withoutで規定されたグループ分けしないユーザーのリスト
+
+        const presences = window.APP.hubChannel.presence.state; 
+        const wholeList = Object.keys(presences).map(
+          e => {
+            if(adminList.includes(presences[e].metas[0].profile.displayName)) return;
+            return presences[e].metas[0].profile.displayName;
+          }
+        ); //ルームかロビーにいるユーザー全員のリスト
+        const alreadyNum = Object.keys(presences).map(
+          e => {
+            if(adminList.includes(presences[e].metas[0].profile.displayName)) return;
+            return presences[e].metas[0].profile.team
+          }
+        ); //すでに割り振られているチーム番号のリスト
         
-        const adminList = chatBodyList[5] ? chatBodyList[5].split(",") : [];
-        const nameList = wholeList.filter(item => !adminList.includes(item));
+        const nameList = wholeList.filter(item => !adminList.includes(item)); //グループ分けされるユーザーのリスト
 
         let dividedList;
         if(chatBodyList[6] === "reset") {
           dividedList = this.shuffleAndDivide(nameList);
+          console.log(red + "グループリセット&グループ分け実行" + reset);
+          console.log(red + "実行細目" + reset);
+          console.log("adminList=", adminList);
+          console.log("wholeList=", wholeList);
         } else {
           dividedList = this.assignAndBalanceNumbers(nameList, alreadyNum);
+          console.log(red + "グループ分け実行" + reset);
         }
         
         const message =
@@ -205,6 +224,16 @@ export default class MessageDispatch extends EventTarget {
           const teamNum = window.APP.hubChannel.store.state.profile.team ? `TEAM${window.APP.hubChannel.store.state.profile.team}` : '';
           vrHudTeamCount.setAttribute("text", "value", teamNum);
         }
+      } else if(
+        chatBodyList[0] === "systemMessage" &&
+        chatBodyList[1] === "grouping" &&
+        chatBodyList[2] === window.APP.hubChannel.store.state.profile.displayName 
+      ){
+        window.APP.hubChannel.store.update({
+          profile: {
+            team: chatBodyList[3]
+          }
+        });
       } else if(
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[1] === "unGrouping" &&
