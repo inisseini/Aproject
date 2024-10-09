@@ -200,12 +200,14 @@ export default class MessageDispatch extends EventTarget {
           console.log(red + "実行細目" + reset);
           console.log("adminList=", adminList);
           console.log("wholeList=", wholeList);
+          console.log("alreadyNum=", alreadyNum);
         } else {
           dividedList = this.assignAndBalanceNumbers(nameList, alreadyNum);
           console.log(red + "グループ分け実行" + reset);
           console.log(red + "実行細目" + reset);
           console.log("adminList=", adminList);
           console.log("wholeList=", wholeList);
+          console.log("alreadyNum=", alreadyNum);
         }
         
         const message =
@@ -224,11 +226,6 @@ export default class MessageDispatch extends EventTarget {
             team: result
           }
         });
-        if(this.scene.is(vr-mode)) {
-          const vrHudTeamCount = document.querySelector("#hud-team-count");
-          const teamNum = window.APP.hubChannel.store.state.profile.team ? `TEAM${window.APP.hubChannel.store.state.profile.team}` : '';
-          vrHudTeamCount.setAttribute("text", "value", teamNum);
-        }
       } else if(
         chatBodyList[0] === "systemMessage" &&
         chatBodyList[1] === "grouping" &&
