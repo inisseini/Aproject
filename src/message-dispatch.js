@@ -58,6 +58,7 @@ export default class MessageDispatch extends EventTarget {
   }
 
   shuffleAndDivide(names) {
+    /*
     // シャッフル
     for (let i = names.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -77,6 +78,22 @@ export default class MessageDispatch extends EventTarget {
       group.forEach(name => {
         result += `${name}:${index + 1}、`; // グループ番号を1から始める
       });
+    });
+
+    // 最後の「、」を削除
+    return result.slice(0, -1);*/
+
+    // シャッフル
+    for (let i = names.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [names[i], names[j]] = [names[j], names[i]];
+    }
+
+    // 各名前にランダムに1から6のグループを割り当てる
+    let result = '';
+    names.forEach((name, index) => {
+      const groupNumber = (index % 6) + 1; // 1から6のグループに分ける
+      result += `${name}:${groupNumber}、`;
     });
 
     // 最後の「、」を削除

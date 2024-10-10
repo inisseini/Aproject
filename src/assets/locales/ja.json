@@ -264,7 +264,7 @@
   "loading-screen.heading.whats-new": "新着情報",
   "loading-screen.loading-objects": "データ読み込み {loadedCount}/{objectCount}",
   "loading-screen.message.keyboard-controls": "Qキーを押すと左、Eキーを押すと右に回転します。",
-  "loading-screen.message.whats-new": "チャットの絵文字機能を改善しました。 <a>続きを読む</a>",
+  "loading-screen.message.whats-new": "VR機器で入室した場合は左コントローラーのジョイスティックで移動、右コントローラーのジョイスティックで視点の移動が可能です",
   "media-browser.add_custom_avatar": "アバターGLBファイルのURL",
   "media-browser.add_custom_object": "カスタムURLまたはファイル",
   "media-browser.add_custom_scene": "カスタムシーン",
